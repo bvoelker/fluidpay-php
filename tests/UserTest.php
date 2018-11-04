@@ -6,7 +6,7 @@ require_once( __DIR__.'/../vendor/fzaninotto/faker/src/autoload.php');
 $faker = Faker\Factory::create();
 
 class UserTest extends TestCase {
-    public function testUserCreate() {
+    public function testCreateUser() {
         global $faker;
         global $TestMerchantAPIKey;
         $PG = new PaymentGateway();
@@ -14,7 +14,7 @@ class UserTest extends TestCase {
         $PG->apiKey = $TestMerchantAPIKey;
         $user = array(
             "username" => $faker->userName.$faker->numberBetween(1000, 10000),
-            "password" => $faker->password.$faker->numberBetween(100, 1000),
+            "password" => $faker->password.'Aa'.$faker->numberBetween(100, 1000),
             "name" => $faker->name,
             "phone" => substr(preg_replace('/\D/', '', $faker->phoneNumber), 0, 10),
             "email" => $faker->email,
@@ -32,10 +32,36 @@ class UserTest extends TestCase {
         return $result['data'];
     }
 
-    public function testUserGet() {
+    public function testGetCurrentUser() {
         global $TestMerchantAPIKey;
 
-        $user = $this->testUserCreate();
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $result = $PG->getCurrentUser();
+        $this->assertEquals(
+            'success',
+            $result['status']
+        );
+    }
+
+    public function testGetAllUsers() {
+        global $TestMerchantAPIKey;
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $result = $PG->getAllUsers();
+        $this->assertEquals(
+            'success',
+            $result['status']
+        );
+    }
+
+    public function testGetUser() {
+        global $TestMerchantAPIKey;
+
+        $user = $this->testCreateUser();
 
         $PG = new PaymentGateway();
         $PG->environment = 'local';
@@ -47,11 +73,11 @@ class UserTest extends TestCase {
         );
     }
 
-    public function testCustomerUpdate() {
+    public function testUpdateUser() {
         global $faker;
         global $TestMerchantAPIKey;
 
-        $user = $this->testUserCreate();
+        $user = $this->testCreateUser();
 
         $PG = new PaymentGateway();
         $PG->environment = 'local';
@@ -66,26 +92,26 @@ class UserTest extends TestCase {
             "role" => "admin"
         );
 
-        $result = $PG->updateUSer($user);
+        $result = $PG->updateUser($user);
         $this->assertEquals(
             'success',
             $result['status']
         );
     }
 
-//    public function testCustomerDelete() {
-//        global $TestMerchantAPIKey;
-//
-//        // Create new customer first
-//        $customer = $this->testCustomerCreate();
-//
-//        $PG = new PaymentGateway();
-//        $PG->environment = 'local';
-//        $PG->apiKey = $TestMerchantAPIKey;
-//        $result = $PG->deleteCustomer($customer['id']);
-//        $this->assertEquals(
-//            'success',
-//            $result['status']
-//        );
-//    }
+    public function testDeleteCustomer() {
+        global $TestMerchantAPIKey;
+
+        // Create new customer first
+        $user = $this->testCreateUser();
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $result = $PG->deleteUser($user['id']);
+        $this->assertEquals(
+            'success',
+            $result['status']
+        );
+    }
 }

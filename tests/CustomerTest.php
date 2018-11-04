@@ -6,9 +6,10 @@ require_once( __DIR__.'/../vendor/fzaninotto/faker/src/autoload.php');
 $faker = Faker\Factory::create();
 
 class CustomerTest extends TestCase {
-    public function testCustomerCreate() {
+    public function testCreateCustomer() {
         global $faker;
         global $TestMerchantAPIKey;
+
         $PG = new PaymentGateway();
         $PG->environment = 'local';
         $PG->apiKey = $TestMerchantAPIKey;
@@ -57,10 +58,10 @@ class CustomerTest extends TestCase {
         return $result['data'];
     }
 
-    public function testCustomerGet() {
+    public function testGetCustomer() {
         global $TestMerchantAPIKey;
 
-        $customer = $this->testCustomerCreate();
+        $customer = $this->testCreateCustomer();
 
         $PG = new PaymentGateway();
         $PG->environment = 'local';
@@ -72,11 +73,11 @@ class CustomerTest extends TestCase {
         );
     }
 
-    public function testCustomerUpdate() {
+    public function testUpdateCustomer() {
         global $faker;
         global $TestMerchantAPIKey;
 
-        $customer = $this->testCustomerCreate();
+        $customer = $this->testCreateCustomer();
 
         $PG = new PaymentGateway();
         $PG->environment = 'local';
@@ -93,10 +94,10 @@ class CustomerTest extends TestCase {
         );
     }
 
-    public function testCustomerDelete() {
+    public function testDeleteCustomer() {
         global $TestMerchantAPIKey;
 
-        $customer = $this->testCustomerCreate();
+        $customer = $this->testCreateCustomer();
 
         $PG = new PaymentGateway();
         $PG->environment = 'local';

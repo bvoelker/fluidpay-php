@@ -24,12 +24,28 @@ class PaymentGateway {
     ///////////
     // Users //
     ///////////
+    public function getCurrentUser() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/user'
+        ));
+    }
+
     public function createUser($user) {
         return $this->request(array(
             'apiKey' => $this->apiKey,
             'method' => 'POST',
             'url' => '/user',
             'fields' => $user
+        ));
+    }
+
+    public function getAllUsers() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/users'
         ));
     }
 
@@ -47,6 +63,14 @@ class PaymentGateway {
             'method' => 'POST',
             'url' => '/user/'.$user['id'],
             'fields' => $user
+        ));
+    }
+
+    public function deleteUSer($userID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'DELETE',
+            'url' => '/user/'.$userID
         ));
     }
 
