@@ -21,6 +21,25 @@ class PaymentGateway {
         ));
     }
 
+    //////////////
+    // Api Keys //
+    //////////////
+    public function createApiKey() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/user/apikey'
+        ));
+    }
+    public function getApiKeys() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/user/apikey'
+        ));
+    }
+
+
     ///////////
     // Users //
     ///////////
@@ -108,6 +127,258 @@ class PaymentGateway {
             'apiKey' => $this->apiKey,
             'method' => 'DELETE',
             'url' => '/customer/'.$customerID
+        ));
+    }
+
+    public function createCustomerAddressToken($customerID, $address) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/customer/'.$customerID.'/address',
+            'fields' => $address
+        ));
+    }
+
+    public function getCustomerAddress($customerID, $addressID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/customer/'.$customerID.'/address/'.$addressID
+        ));
+    }
+
+    public function getCustomerAllAddresses($customerID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/customer/'.$customerID.'/addresses'
+        ));
+    }
+
+    public function updateCustomerAddress($customerID, $addressID, $address) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/customer/'.$customerID.'/address/'.$addressID,
+            'fields' => $address
+        ));
+    }
+
+    public function deleteCustomerAddress($customerID, $addressID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'DELETE',
+            'url' => '/customer/'.$customerID.'/address/'.$addressID
+        ));
+    }
+
+    public function createCustomerPaymentToken($customerID, $paymentType, $paymentData) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/customer/'.$customerID.'/paymentmethod/'.$paymentType
+        ));
+    }
+
+    //////////////////
+    // Transactions //
+    //////////////////
+    public function processTransaction($transaction) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/transaction',
+            'fields' => $transaction
+        ));
+    }
+
+    public function getTransaction($transactionID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/transaction/'.$transactionID
+        ));
+    }
+
+    public function captureTransaction($transactionID, $capture) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/transaction/'.$transactionID.'/capture',
+            'fields' => $capture
+        ));
+    }
+
+    public function voidTransaction($transactionID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/transaction/'.$transactionID.'/void'
+        ));
+    }
+
+    public function refundTransaction($transactionID, $refund) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/transaction/'.$transactionID.'/refund',
+            'fields' => $refund
+        ));
+    }
+
+    ///////////////
+    // Recurring //
+    ///////////////
+    public function createAddOn($addOn) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/recurring/addon',
+            'fields' => $addOn
+        ));
+    }
+
+    public function getAddOn($addOnID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/recurring/addon/'.$addOnID
+        ));
+    }
+
+    public function getAllAddOns() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/recurring/addons'
+        ));
+    }
+
+    public function deleteAddOn($addonID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'DELETE',
+            'url' => '/recurring/addon/'.$addonID
+        ));
+    }
+
+    public function createDiscount($discount) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/recurring/discount',
+            'fields' => $discount
+        ));
+    }
+
+    public function getDiscount($discountID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/recurring/discount/'.$discountID
+        ));
+    }
+
+    public function getAllDiscounts() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/recurring/discounts'
+        ));
+    }
+
+    public function deleteDiscount($discountID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'DELETE',
+            'url' => '/recurring/discount/'.$discountID
+        ));
+    }
+
+    public function createPlan($plan) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/recurring/plan',
+            'fields' => $plan
+        ));
+    }
+
+    public function updatePlan($planID, $plan) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/recurring/plan/'.$planID,
+            'fields' => $plan
+        ));
+    }
+
+    public function getPlan($planID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/recurring/plan/'.$planID
+        ));
+    }
+
+    public function getAllPlans() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/recurring/plans'
+        ));
+    }
+
+    public function deletePlan($planID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'DELETE',
+            'url' => '/recurring/plan/'.$planID
+        ));
+    }
+
+    public function createSubscription($subscription) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/recurring/subscription',
+            'fields' => $subscription
+        ));
+    }
+
+    public function updateSubscription($subscriptionID, $subscription) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/recurring/subscription/'.$subscriptionID,
+            'fields' => $subscription
+        ));
+    }
+
+    public function getSubscription($subscriptionID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/recurring/subscription/'.$subscriptionID
+        ));
+    }
+
+    public function deleteSubscription($subscriptionID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'DELETE',
+            'url' => '/recurring/subscription/'.$subscriptionID
+        ));
+    }
+
+    ///////////////
+    // Terminals //
+    ///////////////
+    public function getAllTerminals() {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/terminals'
         ));
     }
 

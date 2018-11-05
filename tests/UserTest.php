@@ -14,7 +14,7 @@ class UserTest extends TestCase {
         $PG->apiKey = $TestMerchantAPIKey;
         $user = array(
             "username" => $faker->userName.$faker->numberBetween(1000, 10000),
-            "password" => $faker->password.'Aa'.$faker->numberBetween(100, 1000),
+            "password" => $faker->password.'Aa'.$faker->numberBetween(100, 1000).'!',
             "name" => $faker->name,
             "phone" => substr(preg_replace('/\D/', '', $faker->phoneNumber), 0, 10),
             "email" => $faker->email,
@@ -24,6 +24,9 @@ class UserTest extends TestCase {
         );
 
         $result = $PG->createUser($user);
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
         $this->assertEquals(
             'success',
             $result['status']
@@ -93,6 +96,9 @@ class UserTest extends TestCase {
         );
 
         $result = $PG->updateUser($user);
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
         $this->assertEquals(
             'success',
             $result['status']

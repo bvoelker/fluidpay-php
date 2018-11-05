@@ -1,5 +1,6 @@
 <?php
 
+$TestMerchantUserID = "testmerchant12345678";
 $TestMerchantAPIKey = "api_0wUsHIlrkK1I6ADno5MfT10UjhR";
 $TestMerchantUsername = "test_merchant";
 $TestMerchantPassword = "Fluidpay247!";
