@@ -176,7 +176,41 @@ class PaymentGateway {
         return $this->request(array(
             'apiKey' => $this->apiKey,
             'method' => 'POST',
+            'url' => '/customer/'.$customerID.'/paymentmethod/'.$paymentType,
+            'fields' => $paymentData
+        ));
+    }
+
+    public function getCustomerPayment($customerID, $paymentType, $paymentTypeID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
+            'url' => '/customer/'.$customerID.'/paymentmethod/'.$paymentType.'/'.$paymentTypeID
+        ));
+    }
+
+    public function getCustomerAllPayments($customerID, $paymentType) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'GET',
             'url' => '/customer/'.$customerID.'/paymentmethod/'.$paymentType
+        ));
+    }
+
+    public function updateCustomerPayment($customerID, $paymentType, $paymentTypeID, $data) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'POST',
+            'url' => '/customer/'.$customerID.'/paymentmethod/'.$paymentType.'/'.$paymentTypeID,
+            'fields' => $data
+        ));
+    }
+
+    public function deleteCustomerPayment($customerID, $paymentType, $paymentTypeID) {
+        return $this->request(array(
+            'apiKey' => $this->apiKey,
+            'method' => 'DELETE',
+            'url' => '/customer/'.$customerID.'/paymentmethod/'.$paymentType.'/'.$paymentTypeID
         ));
     }
 

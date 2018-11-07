@@ -25,6 +25,7 @@ class UserTest extends TestCase {
 
         $result = $PG->createUser($user);
         if ($result['status'] != 'success') {
+            print_r($user);
             print_r($result);
         }
         $this->assertEquals(

@@ -23,10 +23,7 @@ class CustomerTest extends TestCase {
         $PG->environment = 'local';
         $PG->apiKey = $TestMerchantAPIKey;
         $result = $PG->getCustomer($customer['id']);
-        $this->assertEquals(
-            'success',
-            $result['status']
-        );
+        $this->assertEquals('success', $result['status']);
     }
 
     public function testUpdateCustomer() {
@@ -45,10 +42,7 @@ class CustomerTest extends TestCase {
         );
 
         $result = $PG->updateCustomer($customer);
-        $this->assertEquals(
-            'success',
-            $result['status']
-        );
+        $this->assertEquals('success', $result['status']);
     }
 
     public function testDeleteCustomer() {
@@ -61,10 +55,7 @@ class CustomerTest extends TestCase {
         $PG->environment = 'local';
         $PG->apiKey = $TestMerchantAPIKey;
         $result = $PG->deleteCustomer($customer['id']);
-        $this->assertEquals(
-            'success',
-            $result['status']
-        );
+        $this->assertEquals('success', $result['status']);
     }
 
     public function testCreateCustomerAddressToken() {
@@ -93,10 +84,7 @@ class CustomerTest extends TestCase {
         if ($result['status'] != 'success') {
             print_r($result);
         }
-        $this->assertEquals(
-            'success',
-            $result['status']
-        );
+        $this->assertEquals('success', $result['status']);
 
         return $result['data'];
     }
@@ -140,10 +128,7 @@ class CustomerTest extends TestCase {
         if ($result['status'] != 'success') {
             print_r($result);
         }
-        $this->assertEquals(
-            'success',
-            $result['status']
-        );
+        $this->assertEquals('success', $result['status']);
     }
 
     public function testGetCustomerAllAddresses() {
@@ -156,10 +141,7 @@ class CustomerTest extends TestCase {
         $PG->environment = 'local';
         $PG->apiKey = $TestMerchantAPIKey;
         $result = $PG->getCustomerAllAddresses($customer['id']);
-        $this->assertEquals(
-            'success',
-            $result['status']
-        );
+        $this->assertEquals('success', $result['status']);
     }
 
     public function testUpdateCustomerAddress() {
@@ -193,24 +175,22 @@ class CustomerTest extends TestCase {
         $PG->environment = 'local';
         $PG->apiKey = $TestMerchantAPIKey;
         $result = $PG->updateCustomerAddress($customer['id'], $addressID, $address);
-        $this->assertEquals(
-            'success',
-            $result['status']
-        );
+        $this->assertEquals('success', $result['status']);
     }
 
+    // TODO: Cannot delete customer address that is in use. Need to figure out how to get it out of use
 //    public function testDeleteCustomerAddress() {
 //        global $TestMerchantAPIKey;
-//
+
 //        $cusSeed = new CustomerSeed();
 //        $customer = $cusSeed->createCustomer();
-//
+
 //        $PG = new PaymentGateway();
 //        $PG->environment = 'local';
 //        $PG->apiKey = $TestMerchantAPIKey;
 //        $result = $PG->getCustomerAllAddresses($customer['id']);
 //        $addressID = $result['data'][0]['id'];
-//
+
 //        $PG = new PaymentGateway();
 //        $PG->environment = 'local';
 //        $PG->apiKey = $TestMerchantAPIKey;
@@ -224,28 +204,125 @@ class CustomerTest extends TestCase {
 //        );
 //    }
 
-//    public function testCreateCustomerPaymentToken() {
-//        global $TestMerchantAPIKey;
-//        $cusSeed = new CustomerSeed();
-//        $customer = $cusSeed->createCustomer();
-//
-//        $PG = new PaymentGateway();
-//        $PG->environment = 'local';
-//        $PG->apiKey = $TestMerchantAPIKey;
-//        $card = array(
-//            "card_number" => "4111111111111111",
-//            "expiration_date" => "1220"
-//        );
-//        $result = $PG->createCustomerPaymentToken($customer['id'], 'card', $card);
-//        if ($result['status'] != 'success') {
-//            print_r($result);
-//        }
-//        $this->assertEquals(
-//            'success',
-//            $result['status']
-//        );
-//
-//        return $result['data'];
-//    }
+    public function testCreateCustomerPaymentToken() {
+        global $TestMerchantAPIKey;
+        $cusSeed = new CustomerSeed();
+        $customer = $cusSeed->createCustomer();
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $card = array(
+            "card_number" => "4111111111111111",
+            "expiration_date" => "12/20"
+        );
+        $result = $PG->createCustomerPaymentToken($customer['id'], 'card', $card);
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
+        $this->assertEquals('success', $result['status']);
+
+        return $result['data'];
+    }
+
+    public function testGetCustomerAllPayments() {
+        global $TestMerchantAPIKey;
+        $cusSeed = new CustomerSeed();
+        $customer = $cusSeed->createCustomer();
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $result = $PG->getCustomerAllPayments($customer['id'], 'card');
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
+        $this->assertEquals('success', $result['status']);
+
+        return $result['data'];
+    }
+
+    public function testGetCustomerPayment() {
+        global $TestMerchantAPIKey;
+        $cusSeed = new CustomerSeed();
+        $customer = $cusSeed->createCustomer();
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $result = $PG->getCustomerAllPayments($customer['id'], 'card');
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
+        $this->assertEquals('success', $result['status']);
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $result = $PG->getCustomerPayment($customer['id'], 'card', $result['data'][0]['id']);
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
+        $this->assertEquals('success', $result['status']);
+
+        return $result['data'];
+    }
+
+    public function testUpdateCustomerPayment() {
+        global $TestMerchantAPIKey;
+        $cusSeed = new CustomerSeed();
+        $customer = $cusSeed->createCustomer();
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $result = $PG->getCustomerAllPayments($customer['id'], 'card');
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
+        $this->assertEquals('success', $result['status']);
+
+        $PG = new PaymentGateway();
+        $PG->environment = 'local';
+        $PG->apiKey = $TestMerchantAPIKey;
+        $payment = array(
+            "card_number" => "4111111111111111",
+            "expiration_date" => "12/20"
+        );
+        $result = $PG->updateCustomerPayment($customer['id'], 'card', $result['data'][0]['id'], $payment);
+        if ($result['status'] != 'success') {
+            print_r($result);
+        }
+        $this->assertEquals('success', $result['status']);
+
+        return $result['data'];
+    }
+
+    // TODO: Cannot delete when in use. Figure out how to disconnect
+    // public function testDeleteCustomerPayment() {
+    //     global $TestMerchantAPIKey;
+    //     $cusSeed = new CustomerSeed();
+    //     $customer = $cusSeed->createCustomer();
+
+    //     $PG = new PaymentGateway();
+    //     $PG->environment = 'local';
+    //     $PG->apiKey = $TestMerchantAPIKey;
+    //     $result = $PG->getCustomerAllPayments($customer['id'], 'card');
+    //     if ($result['status'] != 'success') {
+    //         print_r($result);
+    //     }
+    //     $this->assertEquals('success', $result['status']);
+
+    //     $PG = new PaymentGateway();
+    //     $PG->environment = 'local';
+    //     $PG->apiKey = $TestMerchantAPIKey;
+    //     $result = $PG->deleteCustomerPayment($customer['id'], 'card', $result['data'][0]['id']);
+    //     if ($result['status'] != 'success') {
+    //         print_r($result);
+    //     }
+    //     $this->assertEquals('success', $result['status']);
+
+    //     return $result['data'];
+    // }
 
 }
