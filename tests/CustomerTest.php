@@ -286,8 +286,10 @@ class CustomerTest extends TestCase {
         $PG->environment = 'local';
         $PG->apiKey = $TestMerchantAPIKey;
         $payment = array(
-            "card_number" => "4111111111111111",
-            "expiration_date" => "12/20"
+            "card" => array(
+                "card_number" => "4111111111111111",
+                "expiration_date" => "12/20"
+            )
         );
         $result = $PG->updateCustomerPayment($customer['id'], 'card', $result['data'][0]['id'], $payment);
         if ($result['status'] != 'success') {
